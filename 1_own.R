@@ -70,3 +70,84 @@ df
 
 df$bmi <- df$weight / (df$height/100)**2
 df
+
+df <- read.csv("http://bit.ly/CEU-R-heights")
+df
+summary(df)
+str(df)
+
+df$bmi <- (df$weightLb*0.4536)/((df$heightIn*2.54/100)^2)
+df$weight <- df$weightLb*0.45
+df$height <- df$heightIn*2.54
+df$heightIn <- df$heightIn <- NULL
+df$bmi <- df$weight / (df$height/100)**2
+df
+
+plot(df)
+
+install.packages("pairsD3")
+library(pairsD3)
+pairsD3::pairsD3(df)
+
+install.packages("GGally")
+library(GGally)
+df$weightLb <- NULL
+ggpairs(df)
+
+
+library(ggplot2)
+ggplot(df, aes(x = height)) + geom_histogram()
+ggplot(df, aes(x = height, y = weight)) + geom_point()
+ggplot(df, aes(x = height, y = weight, col=sex)) + geom_point()
+system.time(g <- ggplot(df, aes(x = height, y = weight, col=sex)) + geom_point())
+system.time(print(g))
+
+g + theme_bw()
+g + theme_void()
+g + geom_smooth()
+
+g + geom_smooth(method = "lm")
+g + geom_smooth(method = "lm", se = FALSE)
+
+ggplot(df, aes(x = height, y = weight)) + 
+  geom_point(aes(color = sex)) + 
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  geom_smooth(aes(color = sex), method = "lm", se = FALSE) +
+  theme_bw()
+
+g + scale_y_log10()
+
+ggplot(df, aes(x=height)) + geom_boxplot()
+ggplot(df, aes(sex, height)) + geom_boxplot()
+ggplot(df, aes(sex, height)) + 
+  geom_boxplot() + 
+  geom_violin(alpha = 0.5) + 
+  geom_jitter()
+
+ggplot(df, aes(x = height)) + geom_density()
+ggplot(df, aes(x = height, fill = sex)) + geom_density()
+ggplot(df, aes(x = height, fill = sex)) + 
+  geom_density(alpha = 0.25) +
+  theme_bw() +
+  ggtitle("Height of boys and girls") +
+  xlab("Height (cm)") + ylab("") +
+  theme(legend.position = "top")
+
+
+## TODO bar chart on nr of f/m
+ggplot(df, aes(x = sex)) + geom_bar()
+
+## TODO histogram of weight
+ggplot(df, aes(weight)) + geom_histogram()
+
+## TODO histogram of weight by gender
+ggplot(df, aes(x = weight)) + 
+       geom_histogram(position = "identity") +
+  facet_wrap(~sex) + 
+  theme_bw()
+## TODO bar chart on the number of f/m above and below 160cm
+df$height_cat <- cut(df$height, breaks = c(0, 160, Inf))
+ggplot(df, aes(sex)) + geom_bar() + facet_wrap(~height_cat)
+
+ggplot(df, aes(sex, fill = height_cat)) + geom_bar(position = "dodge")
+ggplot(df, aes(sex, fill = height_cat)) + geom_bar(position = "fill")
