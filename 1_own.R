@@ -65,3 +65,8 @@ dim(df)
 
 plot(df)
 cor(df)
+
+df
+
+df$bmi <- df$weight / (df$height/100)**2
+df
