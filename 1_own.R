@@ -151,3 +151,96 @@ ggplot(df, aes(sex)) + geom_bar() + facet_wrap(~height_cat)
 
 ggplot(df, aes(sex, fill = height_cat)) + geom_bar(position = "dodge")
 ggplot(df, aes(sex, fill = height_cat)) + geom_bar(position = "fill")
+
+## TODO average weight per gender
+mean(df$weight)
+mean(df[df$sex == "f", "weight"])
+mean(df[df$sex == "m", "weight"])
+
+aggregate(weight ~ sex, FUN = mean, data = df)
+
+?subset
+subset(df, sex == "f")
+
+
+## data.table
+install.packages("data.table")
+library(data.table)
+dt <- data.table(df)
+dt
+str(dt)
+summary(dt)
+
+## dt[i]
+dt[1:5]
+dt[sex == "f"]
+dt[sex == "f"][1:5]
+dt[ageYear == min(ageYear)] 
+dt[ageYear == min(ageYear)][order(bmi)]
+
+## dt[i, j]
+dt[, mean(height)]
+dt[, summary(height)]
+dt[, hist(height)]
+
+dt[sex == "m", mean(height)]
+dt[sex == "f", mean(height)]
+
+dt[, mean(height), by = sex]
+dt[, list(height = mean(height)), by = sex]
+dt[, list(height = mean(height), weight = mean(weight)), by = sex]
+dt[, list(
+  height = mean(height), 
+  weight = mean(weight)
+  ), 
+  by = list(gender = sex, height_cat)]
+
+## TODO new variable: elementary school = age < 14
+## compute median weight for elementary vs high school
+
+dt$elementary <- dt$ageYear < 14
+dt[ageYear < 18, median(weight), by = elementary]
+dt[, elementary_school := ageYear < 14]
+dt
+## draw 5 random students from dt
+dt[, .N]
+set.seed(100)
+dt[sample(1:.N,5)]
+
+?sample
+sample(1:.N, 2)
+
+?runif
+dt[round(runif(5, min = 1, max = 237))]
+
+?fread
+booking <- fread("http://bit.ly/CEU-R-hotels-2018-prices")
+booking
+
+## TODO count nr of bookings below 100 EUR
+booking[price<100, .N]
+
+## TODO count the number of bookings below 100 EUR without an offer
+booking[offer == 0 & price<100, .N]
+
+## TODO avg price of bookings below 100 EUR
+booking[price<100, mean(price)]
+
+## TODO avg price of bookings on weekdays
+booking[weekend == 0, mean(price)]
+
+## TODO avg price of bookings on weekends
+booking[weekend == 1, mean(price)]
+
+## TODO include nnights, holiday and year in the aggregate variables
+booking[, mean(price), by = list(weekend, nnights, holiday)]
+
+## TODO compute the average price per number of stars
+feature <- fread("http://bit.ly/CEU-R-hotels-2018-features")
+total <- merge(booking, feature)
+
+aggregate(price ~ stars, FUN = mean, data = total)
+total[, mean(price), by = stars][order(stars)]
+
+merge(booking, feature, all = TRUE)
+booking[!hotel_id %in% feature$hotel_id]
