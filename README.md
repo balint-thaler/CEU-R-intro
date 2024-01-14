@@ -2,11 +2,12 @@ This is the R script repository of the "[Coding 3: Introduction to R](https://co
 
 ## Table of Contents
 
-* [Schedule](https://github.com/daroczig/CEU-DV2#schedule)
-* [Syllabus](https://github.com/daroczig/CEU-DV2#syllabus)
-* [Technical Prerequisites](https://github.com/daroczig/CEU-DV2#technical-prerequisites)
-* [Class Schedule](https://github.com/daroczig/CEU-DV2#class-schedule)
-* [Contact](https://github.com/daroczig/CEU-DV2#contacts)
+* [Schedule](#schedule)
+* [Syllabus](#syllabus)
+* [Technical Prerequisites](#technical-prerequisites)
+* [Class Schedule](#class-schedule)
+* [Homework](#homework)
+* [Contact](#contacts)
 
 ## Schedule
 
@@ -125,19 +126,47 @@ for (user in users) {
 
 ## Class Schedule
 
-### Week 1 (200 min)
-
-#### Introduction to R
+### Week 1 (200 min): Introduction to R
 
 * General overview of the R ecosystem: [slides](http://bit.ly/CEU-R-intro-2023)
 * Basic math operations: [1.R](1.R#L1)
 * Numbers, strings, vectors: [1.R](1.R#L12)
-* Functions: [1.R](1.R#L43)
-* Basic plots: [1.R](1.R#L62)
-* Basic stats: [1.R](1.R#L84)
-* Intro to data frames: [1.R](1.R#L102)
+* Functions: [1.R](1.R#L50)
+* Basic plots: [1.R](1.R#L68)
+* Basic stats: [1.R](1.R#L136)
+* Intro to data frames: [1.R](1.R#L167)
+* Introduction to data visualization with `ggplot2`: [1.R](1.R#L244)
+* Introduction to `data.table`: [1.R](1.R#L323)
 
 Suggested reading: [Hadley Wickham: Style guide. In *Advanced R*.](http://adv-r.had.co.nz/Style.html)
+
+## Homework
+
+Load the bookings dataset:
+
+```r
+library(ggplot2)
+library(data.table)
+hotels <- readRDS(url('http://bit.ly/CEU-R-hotels-2018-merged'))
+```
+
+* How many hotels are from Austria?
+* What is the rating of the most expensive hotel (based on the price per night)?
+* How many bookings are in 4-star hotels?
+* Which country has the highest number of 5-star hotels?
+* Plot the number of bookings per country!
+* Flip the coordinates and use the "classic dark-on-light theme"!
+* Drop the Y axis title, and rename the X axis to "Number of hotels"!
+* Count the number of hotels per country!
+* Order by alphabet!
+* Count the number of bookings per country, order by the number of bookings!
+* Compute the average rating per number of stars! Use the `weighted.mean` function to account for the number of ratings of the hotels, and experiment with the `na.rm` argument. Eliminate `NA`s. Order by stars.
+* Plot this computed average rating per stars!
+* Make sure that each star category is printed on the X axis!
+* Create a boxplot on ratings per stars!
+* Create histograms on the nightly prices for each star category! Check out the arguments and disable forcing the same Y axis range for the subplots.
+
+Compare your results with [the example solutions](https://raw.githack.com/daroczig/CEU-R-intro/2023-winter/homework.html).
 
 ## Contact
 
